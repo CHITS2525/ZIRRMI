@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+pandas
+requests
+tweepy
+beautifulsoup4
+pillow
+selenium
+python-dotenv
+webdriver-manager
