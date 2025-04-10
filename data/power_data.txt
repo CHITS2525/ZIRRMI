@@ -1,0 +1,3 @@
+Kariba: 485MW
+Hwange: 675MW
+IPPS: 84MW
