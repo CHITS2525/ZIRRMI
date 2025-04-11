@@ -206,7 +206,7 @@
             predictionBox.classList.add('hidden');
 
             try {
-                const response = await fetch('https://zirrmi-power-solutions.onrender.com/report-outage', {
+                const response = await fetch('/report-outage', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -215,6 +215,8 @@
                 });
 
                 const responseData = await response.json();
+                console.log("Server returned:", responseData);
+
                 if (response.ok) {
                     responseMessage.textContent = responseData.message;
                     responseMessage.classList.remove('error-message');
@@ -223,10 +225,10 @@
 
                     if (responseData.prediction) {
                         predictionBox.textContent = responseData.prediction;
-                        predictionBox.style.display = 'block'; // ✅ Makes it visible
+                        predictionBox.classList.remove('hidden');
                     } else {
                         predictionBox.textContent = "No prediction available.";
-                        predictionBox.style.display = 'block'; // ✅ Also show message in case prediction missing
+                        predictionBox.classList.remove('hidden');
                     }
 
                 } else {
