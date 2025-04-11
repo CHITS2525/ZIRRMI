@@ -205,7 +205,10 @@
             predictionBox.classList.add('hidden');
 
             try {
-                const response = await fetch('https://zirrmi-power-solutions.onrender.com/report-outage', {
+                const apiUrl = window.location.origin + '/report-outage';
+                const response = await fetch(apiUrl, {
+
+
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
