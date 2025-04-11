@@ -8,3 +8,4 @@ pillow
 selenium
 python-dotenv
 webdriver-manager
+pytesseract
