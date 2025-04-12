@@ -113,7 +113,44 @@
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
     <div class="form-container">
-        <h1 class="form-header text-2xl font-semibold text-gray-800">Report Power Outage</h1>
+        <section class="mb-12">
+            <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">
+                Power Outages Are Destroying Zimbabwe's Manufacturing Output.
+                <br>
+                <span class="text-blue-600">ZIRRMI Helps You Predict, Plan, and Power Through.</span>
+            </h1>
+
+            <div class="text-gray-700 space-y-4 text-base leading-relaxed max-w-2xl mx-auto">
+                <p>⚠️ ZESA’s unpredictable outages are costing your factory money. Missed production targets. Delayed deliveries. Unhappy clients.</p>
+                <p>⚠️ Backup generators? Expensive. Diesel shortages? Common. Planning? Impossible — until now.</p>
+
+                <p class="font-semibold text-gray-800">ZIRRMI is your factory’s power prediction system:</p>
+                <ul class="list-disc pl-6 space-y-1">
+                    <li>💡 Forecast blackouts before they happen</li>
+                    <li>📍 Real-time national power monitoring</li>
+                    <li>📊 Help your team plan shifts and cut production loss</li>
+                </ul>
+
+                <p class="text-green-700 font-medium">✅ We’ve already built the MVP — it works.</p>
+                <p>✅ It takes reports, predicts risks, and gives instant power estimates. Now we’re building the full version for you.</p>
+
+                <p class="font-semibold">Full Product Coming Soon:</p>
+                <ul class="list-disc pl-6 space-y-1">
+                    <li>📈 7-Day Power Forecast Dashboard</li>
+                    <li>🔔 Smart Outage Alerts (SMS / WhatsApp)</li>
+                    <li>⚙️ Generator Auto-Switch Rules</li>
+                    <li>💰 Cost Loss Estimator</li>
+                    <li>📤 Automated Weekly Reports for Management</li>
+                </ul>
+
+                <p class="text-lg font-bold text-gray-900 mt-6">
+                    We’re launching with 50 factories first. Want in?
+                </p>
+            </div>
+        </section>
+        <h1 class="form-header text-xl font-semibold text-gray-800">
+            Join the ZIRRMI Waitlist & Get Early Access
+        </h1>
         <form id="outageForm" method="POST" class="space-y-6">
             <div class="form-group">
                 <label for="name" class="form-label">Company Name:</label>
@@ -125,6 +162,11 @@
                 <input type="tel" id="phone_number" name="phone_number"  pattern="[0-9]{10,15}" class="form-input" placeholder="e.g., 2637XXXXXXXX" required>
                 <div id="phoneError" class="error-message hidden">Please enter a valid phone number.</div>
             </div>
+             <div class="form-group">
+                <label for="email" class="form-label">Email Address:</label>
+                <input type="email" id="email" name="email" class="form-input" placeholder="e.g., info@yourcompany.com" required>
+                <div id="emailError" class="error-message hidden">Please enter a valid email address.</div>
+            </div>
             <div class="form-group">
                 <label for="location" class="form-label">Location:</label>
                 <input type="text" id="location" name="location" class="form-input" placeholder="e.g., Harare" required>
@@ -134,7 +176,7 @@
                 <label for="details" class="form-label">Details (Optional):</label>
                 <textarea id="details" name="details" class="form-textarea" placeholder="Enter power outage start and end times if known."></textarea>
             </div>
-            <button type="submit" id="submitBtn" class="form-button">Report Outage</button>
+            <button type="submit" id="submitBtn" class="form-button">Join the Waitlist</button>
             <div id="responseMessage" class="response-message hidden"></div>
             <div id="loading" class="hidden">Submitting outage report...</div>
             <div id="predictionBox" class="hidden"></div>
@@ -153,6 +195,9 @@
         const submitBtn = document.getElementById('submitBtn');
         const loadingIndicator = document.getElementById('loading');
         const predictionBox = document.getElementById('predictionBox');
+        const emailInput = document.getElementById('email');
+        const emailError = document.getElementById('emailError');
+
 
         function validateForm() {
             let isValid = true;
@@ -172,6 +217,16 @@
             }
             else {
                 phoneError.classList.add('hidden');
+            }
+             if (!emailInput.value.trim()) {
+                emailError.classList.remove('hidden');
+                isValid = false;
+            } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(emailInput.value)) {
+                emailError.textContent = "Please enter a valid email address.";
+                emailError.classList.remove('hidden');
+                isValid = false;
+            } else {
+                emailError.classList.add('hidden');
             }
             if (!locationInput.value.trim()) {
                 locationError.classList.remove('hidden');
@@ -197,7 +252,8 @@
                 name: formData.get('name'),
                 phone_number: formData.get('phone_number'),
                 location: formData.get('location'),
-                details: formData.get('details')
+                details: formData.get('details'),
+                email: formData.get('email')
             };
 
             responseMessage.textContent = "Submitting outage report...";
@@ -207,8 +263,6 @@
             try {
                 const apiUrl = window.location.origin + '/report-outage';
                 const response = await fetch(apiUrl, {
-
-
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -226,7 +280,7 @@
                     outageForm.reset();
 
                     if (responseData.prediction) {
-                        predictionBox.textContent = responseData.prediction;
+                        predictionBox.textContent = "Prediction: " + responseData.prediction;
                         predictionBox.style.display = 'block';
                     } else {
                         predictionBox.textContent = "No prediction available.";
